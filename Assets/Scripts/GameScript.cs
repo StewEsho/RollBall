@@ -23,6 +23,12 @@ public class GameScript : MonoBehaviour {
 		scoreRisk = 1;
 	}
 
+	void Update(){
+		if(transform.position.x > 40 || transform.position.x < -40 || transform.position.z > 40 || transform.position.z < -40){
+			transform.Translate(0, 0, 0, Space.World);
+		}
+	}
+
 	// Physics Code
 	void FixedUpdate () {
 		/**
@@ -41,14 +47,14 @@ public class GameScript : MonoBehaviour {
 			col.gameObject.transform.position = new Vector3(rng.Next(-20, 20), transform.position.y, rng.Next(-20, 20));
 			scoreBonus++;
 			score += scoreBonus;
-			guiScore.text = score.ToString();
 		} else if (col.gameObject.name == "Virus"){
+			col.gameObject.transform.position = new Vector3(rng.Next(-20, 20), transform.position.y, rng.Next(-20, 20));
 			scoreRisk += scoreBonus*2;
 			score -= 1+(scoreRisk);
 			scoreBonus = 0;
 			scoreRisk = 1;
-			guiScore.text = score.ToString();
 		}
+		guiScore.text = score.ToString();
 	}
 
 }

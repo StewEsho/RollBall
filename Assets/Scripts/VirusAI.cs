@@ -13,7 +13,7 @@ public class VirusAI : MonoBehaviour {
 
 	//Public Variables
 	public float speed;									//Virus' speed
-	public Transform player;						//Used to access player and their position
+	private GameObject player;						//Used to access player and their position
 	public float proxDistance;					//Distance in which two objects are considered "close"
 	public float updateTime;
 	private int rangeZ;
@@ -22,10 +22,23 @@ public class VirusAI : MonoBehaviour {
 		rng = new System.Random((int)DateTime.Now.Ticks);
 		pos = transform.position;
 		elapsedTime = 0;
+		player = GameObject.Find("Player");
 	}
 
 	void Update(){
 		patrol();
+	}
+
+	void OnTriggerEnter(Collider col){
+		if(col.gameObject.name == "Player"){
+			transform.LookAt(player.transform.position);
+		}
+	}
+
+	void OnTriggerStay(Collider col){
+		if(col.gameObject.name == "Player"){
+			chase();
+		}
 	}
 
 	void patrol(){
@@ -48,8 +61,8 @@ public class VirusAI : MonoBehaviour {
 	}
 
 	void chase(){
-		transform.LookAt(player);
-		transform.position += transform.forward * speed * Time.deltaTime;
+		transform.LookAt(player.transform.position);
+		transform.position += transform.forward * (speed - 2F) * Time.deltaTime;
 	}
 
 	void updateWaypoint(){
